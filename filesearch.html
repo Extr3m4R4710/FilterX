@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Dorking Console</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #161616;
+            color: #d33b48;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        #top-nav {
+            padding: 10px;
+            background-color: #212121; /* 背景色を白に変更 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            color: #fff !important; /* フォント色を白に設定 */
+        }
+
+
+        #search-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: #212121;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            margin: 80px auto 20px; /* 水平方向に中央揃え */
+            box-sizing: border-box;
+        }
+
+        #search-input-container {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #search-query {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #161616;
+            color: #fff;
+            border: none;
+        }
+
+        #search-button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #000; /* ボタンの背景色を指定 */
+            color: #fff; /* ボタンのフォント色を白に指定 */
+            border: none;
+        }
+
+        #checkbox-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #pdf-checkbox,
+        #word-checkbox,
+        #excel-checkbox,
+        #container-checkbox,
+        #powerpoint-checkbox {
+            margin: 5px;
+        }
+        a {
+            color: #fff
+        }
+    </style>
+</head>
+<body>
+    <div id="top-nav">
+        <!-- ここにトップに表示する項目を追加 -->
+        <a href="./index.html">TOP</a>
+    </div>
+
+    <div id="search-box">
+        <div id="search-input-container">
+            <label for="search-query"></label>
+            <input type="text" id="search-query" placeholder="Enter Keyworkd">
+            <button id="search-button" onclick="performSearch()">Search</button>
+        </div>
+        <p> Search files on Google. Using Dork. </p>
+        <div id="checkbox-container">
+            <input type="checkbox" id="pdf-checkbox" />
+            <label for="pdf-checkbox">PDF</label>
+
+            <input type="checkbox" id="word-checkbox" />
+            <label for="word-checkbox">Word{/doc/docx/rtf/}</label>
+
+            <input type="checkbox" id="excel-checkbox" />
+            <label for="excel-checkbox">Excel{xls/xlsx/csv}</label>
+
+            <input type="checkbox" id="container-checkbox" />
+            <label for="container-checkbox">Container{zip/rar/7z/xz}</label>
+
+            <input type="checkbox" id="powerpoint-checkbox" />
+            <label for="powerpoint-checkbox">PowerPoint{ppt/pptx}</label>
+
+            <input type="checkbox" id="txt-checkbox" />
+            <label for="txt-checkbox">TXT</label>
+
+            <input type="checkbox" id="odt-ods-odp-checkbox" />
+            <label for="odt-ods-odp-checkbox">Other Docs{ODT/ODS/ODP}</label>
+        </div>
+    </div>
+
+    <script>
+        function performSearch() {
+            const searchQuery = document.getElementById('search-query').value;
+
+            const pdfCheckbox = document.getElementById('pdf-checkbox');
+            const wordCheckbox = document.getElementById('word-checkbox');
+            const excelCheckbox = document.getElementById('excel-checkbox');
+            const containerCheckbox = document.getElementById('container-checkbox');
+            const powerpointCheckbox = document.getElementById('powerpoint-checkbox')
+            const txtCheckbox = document.getElementById('txt-checkbox')
+            const odtodsodpCheckbox = document.getElementById('odt-ods-odp-checkbox')
+
+            const dorkingOperators = [];
+
+            if (pdfCheckbox.checked) {
+                dorkingOperators.push('ext:pdf');
+            }
+
+            if (wordCheckbox.checked) {
+                dorkingOperators.push('ext:doc OR ext:docx OR ext:rtf');
+            }
+
+            if (excelCheckbox.checked) {
+                dorkingOperators.push('ext:xls OR ext:xlsx OR ext:csv');
+            }
+
+            if (containerCheckbox.checked) {
+                dorkingOperators.push('ext:zip OR ext:rar OR ext:7z OR ext:xz');
+            }
+            if (powerpointCheckbox.checked) {
+                dorkingOperators.push('ext:ppt OR ext:pptx');
+            }
+            if (txtCheckbox.checked) {
+                dorkingOperators.push('ext:txt');
+            }
+            if  (odtodsodpCheckbox.checked) {
+                dorkingOperators.push('ext:ODT OR ext:ODS OR ext:ODP')
+            }
+
+            // 各チェックボックスに基づいてSearxページを開く
+            dorkingOperators.forEach(operator => {
+                const searchUrl = `https://searx.be/search?q=${encodeURIComponent(`${searchQuery} ${operator}`)}`;
+                window.open(searchUrl, '_blank');
+            });
+        }
+    </script>
+</body>
+</html>
